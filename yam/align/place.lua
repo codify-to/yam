@@ -4,14 +4,14 @@
 -- you must provide the alignment options and a table with the list of display objects to align/distribute.
 -- The first display object in the table will be used as reference to align all other objects.
 -- Example:
--- place(Align.DISTRIBUTE_RIGHT,[rect1, rect2]) 
+-- place.align(place.DISTRIBUTE_RIGHT,[rect1, rect2]) 
 -- will place rect2 by the right side of rect1 using the rect1.x + rect.width as reference..
 --
 -- Available alignment and distribution options are:
 --
 -- DISTRIBUTE_RIGHT, DISTRIBUTE_LEFT, DISTRIBUTE_UP & DISTRIBUTE_DOWN
 -- RIGHT, LEFT, TOP & BOTTOM
--- CENTER, CENTER_HORIZONTAL & CENTER_VERTICAL (Not implemented yet)
+-- CENTER_HORIZONTAL & CENTER_VERTICAL
 ----------------------------------------------------------------------------------
 
 local M = {}
@@ -32,7 +32,6 @@ M.distributeDown = 1024
 local function placeTo(items, prop, size, operator)
 	local c = 2
 
-	items[c-1]:setReferencePoint(display.TopLeftReferencePoint)
 	items[1].x = items[1].x
 	items[1].y = items[1].y
 
@@ -42,7 +41,6 @@ local function placeTo(items, prop, size, operator)
 		local sizing = items[c][size];
 		local objPos = items[c][prop];
 
-		items[c]:setReferencePoint(display.TopLeftReferencePoint)
 		if operator == 1 then
 			items[c][prop] = (reffPos + reffSize) 
 		else
@@ -56,14 +54,12 @@ end
 
 local function placeBy(items, prop, size, operator)
 	local c = 2
-	items[c-1]:setReferencePoint(display.TopLeftReferencePoint)
 	items[1].x = items[1].x
 	items[1].y = items[1].y
 
 	local reffSize = items[1][size];
 	local reffPos = items[1][prop];
 	while (c <= #items) do
-		items[c]:setReferencePoint(display.TopLeftReferencePoint)
 		if(items[c] ~= nil) then
 			local objSize = items[c][size]
 			local objPos = items[c][prop]
@@ -81,7 +77,6 @@ end
 
 local function placeCenter(items, prop, size)
 	local c = 2;
-	items[c-1]:setReferencePoint(display.TopLeftReferencePoint)
 	items[1].x = items[1].x
 	items[1].y = items[1].y
 
@@ -91,7 +86,6 @@ local function placeCenter(items, prop, size)
 	local reff = reffSize/2	
 
 	while (c <= #items) do
-		items[c]:setReferencePoint(display.TopLeftReferencePoint)
 		local sizing = items[c][size];
 		local objPos = items[c][prop];
 		items[c][prop] = items[c][prop] - ((objPos - reffPos) + (sizing * .5 - reff));
